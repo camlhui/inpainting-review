@@ -1,11 +1,12 @@
 import json
+import os
 import textwrap
 from typing import List
 
 import matplotlib
 import matplotlib.pyplot as plt
 
-from models import InpaintingTask
+from task_definitions import InpaintingTask
 
 
 def plot_tasks(tasks: List[InpaintingTask], output_path: str):
@@ -35,7 +36,8 @@ def plot_tasks(tasks: List[InpaintingTask], output_path: str):
 
 
 if __name__ == "__main__":
-    with open("data/inpainting-tasks.json") as f:
+    with open("task-config.json") as f:
         tasks = json.load(f)["tasks"]
 
-    plot_tasks(tasks, output_path="data/outputs/benchmark.png")
+    output_path = os.path.join(os.environ["DATA_DIR"], "outputs/benchmark.png")
+    plot_tasks(tasks, output_path)

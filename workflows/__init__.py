@@ -1,11 +1,15 @@
 import importlib
+import os
+from typing import List
+
+from task_definitions import InpaintingTask, Models
 
 
-def load_workflow(workflow_name):
-    try:
-        workflow_module = importlib.import_module(f"workflows.{workflow_name}")
-        return workflow_module
-    except ModuleNotFoundError:
-        raise ValueError(
-            f"Workflow '{workflow_name}' not found in the 'workflows' package."
-        )
+def run_workflow(model: Models, tasks: List[InpaintingTask]):
+
+    if model == Models.FLUX_1_FILL_DEV:
+        workflow_module = importlib.import_module("workflows.flux_1_fill_dev")
+        output_dir = os.path.join(os.environ["DATA_DIR"], model.value.replace("/", "_"))
+        workflow_module.run(model=model, tasks=tasks, output_dir=output_dir)
+
+    raise ValueError(f"Unknown model, model: {model.value}")

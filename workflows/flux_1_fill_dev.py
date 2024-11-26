@@ -1,36 +1,16 @@
 import os
 from typing import List
 
-from models import InpaintingTask
-from workflows.utils import assert_cuda_availability
-
-from diffusers import FluxFillPipeline
 from diffusers.utils import load_image
 
-
-assert os.environ.get(
-    "HUGGING_FACE_HUB_TOKEN"
-), "HUGGING_FACE_HUB_TOKEN is not set or is empty"
-
-assert_cuda_availability()
+from task_definitions import InpaintingTask, Models
+from workflows.model_loader import get_pipeline
 
 
-def _get_pipeline():
+def run(model: Models, tasks: List[InpaintingTask], output_dir: str):
     import torch
 
-    pipe = FluxFillPipeline.from_pretrained(
-        "black-forest-labs/FLUX.1-Fill-dev",
-        torch_dtype=torch.bfloat16,
-        cache_dir=os.environ.get("HUGGING_FACE_CACHE_DIR"),
-    ).to("cuda")
-
-    return pipe
-
-
-def run(tasks: List[InpaintingTask], output_dir: str):
-    import torch
-
-    pipe = _get_pipeline()
+    pipe = get_pipeline(model)
 
     for task in tasks:
         source_image = load_image(task.source_image)
