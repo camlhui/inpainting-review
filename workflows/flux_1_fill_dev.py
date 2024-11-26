@@ -2,17 +2,18 @@ import os
 from typing import List
 
 from models import InpaintingTask
-from workflows.utils import set_hugging_face_hub_token
+from workflows.utils import set_hugging_face_hub_token, assert_cuda_availability
 
 from diffusers import FluxFillPipeline
 from diffusers.utils import load_image
 
 
+set_hugging_face_hub_token()
 assert os.environ.get(
     "HUGGING_FACE_HUB_TOKEN"
 ), "HUGGING_FACE_HUB_TOKEN is not set or is empty"
 
-set_hugging_face_hub_token()
+assert_cuda_availability()
 
 
 def _get_pipeline():

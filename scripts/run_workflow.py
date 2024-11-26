@@ -17,6 +17,7 @@ def main():
 
     output_dir = os.path.join(args.output, args.workflow)
     os.makedirs(output_dir, exist_ok=True)
+
     workflow = load_workflow(args.workflow)
     workflow.run(tasks, output_dir)
 
