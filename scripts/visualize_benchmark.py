@@ -15,12 +15,14 @@ def plot_tasks(tasks: List[InpaintingTask], output_path: str):
     fig, axes = plt.subplots(nrows=len(tasks), ncols=3, figsize=(15, 5 * len(tasks)))
 
     for i, task in enumerate(tasks):
-        source_img = plt.imread(task["source_image"])
+        source_img = plt.imread(
+            os.path.join(os.environ["DATA_DIR"], task["source_image"])
+        )
         axes[i, 0].imshow(source_img)
         axes[i, 0].axis("off")
         axes[i, 0].set_title("Source Image")
 
-        mask_img = plt.imread(task["mask_image"])
+        mask_img = plt.imread(os.path.join(os.environ["DATA_DIR"], task["mask_image"]))
         axes[i, 1].imshow(mask_img)
         axes[i, 1].axis("off")
         axes[i, 1].set_title("Mask Image")
