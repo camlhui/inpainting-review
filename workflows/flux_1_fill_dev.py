@@ -15,8 +15,10 @@ def run(model: Models, tasks: List[InpaintingTask], output_dir: str):
     data_dir = os.environ["DATA_DIR"]
     for task in tasks:
         source_image = load_image(os.path.join(data_dir, task.source_image))
-        mask_image = load_image(os.path.join(data_dir, task.mask_image)).point(
-            lambda x: 255 if x > 128 else 0, mode="1"
+        mask_image = (
+            load_image(os.path.join(data_dir, task.mask_image))
+            .convert("L")
+            .point(lambda x: 255 if x > 128 else 0, mode="1")
         )
 
     image = pipe(
@@ -30,5 +32,5 @@ def run(model: Models, tasks: List[InpaintingTask], output_dir: str):
     ).images[0]
 
     os.makedirs(output_dir, exist_ok=True)
-    output_path = os.path.join(output_dir, f"{task['task_id']}.png")
+    output_path = os.path.join(output_dir, f"{task.task_id}.png")
     image.save(output_path)
