@@ -21,16 +21,16 @@ def run(model: Models, tasks: List[InpaintingTask], output_dir: str):
             .point(lambda x: 255 if x > 128 else 0, mode="1")
         )
 
-    image = pipe(
-        prompt=task.prompt,
-        image=source_image,
-        mask_image=mask_image,
-        height=source_image.size[1],
-        width=source_image.size[0],
-        max_sequence_length=512,
-        generator=torch.Generator("cpu").manual_seed(0),
-    ).images[0]
+        image = pipe(
+            prompt=task.prompt,
+            image=source_image,
+            mask_image=mask_image,
+            height=source_image.size[1],
+            width=source_image.size[0],
+            max_sequence_length=512,
+            generator=torch.Generator("cpu").manual_seed(0),
+        ).images[0]
 
-    os.makedirs(output_dir, exist_ok=True)
-    output_path = os.path.join(output_dir, f"{task.task_id}.png")
-    image.save(output_path)
+        os.makedirs(output_dir, exist_ok=True)
+        output_path = os.path.join(output_dir, f"{task.task_id}.png")
+        image.save(output_path)

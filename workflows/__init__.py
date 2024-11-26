@@ -17,7 +17,10 @@ def run_workflow(model: Models, tasks: List[InpaintingTask]):
         else:
             workflow_module = importlib.import_module(module_name)
 
-        output_dir = os.path.join(os.environ["DATA_DIR"], model.value.replace("/", "_"))
+        output_dir = os.path.join(
+            os.environ["DATA_DIR"], "outputs", model.value.replace("/", "_")
+        )
         workflow_module.run(model=model, tasks=tasks, output_dir=output_dir)
 
-    raise ValueError(f"Unknown model, model: {model.value}")
+    else:
+        raise ValueError(f"Unknown model, model: {model.value}")
