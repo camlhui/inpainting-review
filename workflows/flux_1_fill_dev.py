@@ -12,9 +12,10 @@ def run(model: Models, tasks: List[InpaintingTask], output_dir: str):
 
     pipe = get_pipeline(model)
 
+    data_dir = os.environ["DATA_DIR"]
     for task in tasks:
-        source_image = load_image(task.source_image)
-        mask_image = load_image(task.mask_image).point(
+        source_image = load_image(os.path.join(data_dir, task.source_image))
+        mask_image = load_image(os.path.join(data_dir, task.mask_image)).point(
             lambda x: 255 if x > 128 else 0, mode="1"
         )
 
