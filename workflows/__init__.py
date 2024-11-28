@@ -9,7 +9,7 @@ from task_definitions import InpaintingTask, Models
 def run_workflow(model: Models, tasks: List[InpaintingTask]):
 
     if model == Models.FLUX_1_FILL_DEV:
-        module_name = "workflows.flux_1_fill_dev"
+        module_name = "workflows.flux1_fill_dev"
 
         if module_name in sys.modules:
             workflow_module = sys.modules[module_name]
