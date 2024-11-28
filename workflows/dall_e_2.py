@@ -1,3 +1,4 @@
+from datetime import datetime
 import os
 from PIL import Image
 from typing import List
@@ -49,5 +50,9 @@ def run(tasks: List[InpaintingTask], output_dir: str):
             ) from e
 
         os.makedirs(output_dir, exist_ok=True)
-        output_path = os.path.join(output_dir, f"{task.task_id}.png")
+        output_path = os.path.join(
+            output_dir,
+            datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+            f"{task.task_id}.png",
+        )
         inpainted_image.save(output_path)

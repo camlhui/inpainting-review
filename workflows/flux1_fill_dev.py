@@ -1,3 +1,4 @@
+from datetime import datetime
 import os
 from typing import List
 
@@ -13,20 +14,22 @@ def run(tasks: List[InpaintingTask], output_dir: str):
 
     data_dir = os.environ["DATA_DIR"]
     for task in tasks:
-        source_image = load_and_preprocess_image(
-            os.path.join(data_dir, task.source_image)
-        )
-        mask_image = load_and_preprocess_mask(os.path.join(data_dir, task.mask_image))
-        image = pipe(
+        image = load_and_preprocess_image(os.path.join(data_dir, task.source_image))
+        mask = load_and_preprocess_mask(os.path.join(data_dir, task.mask_image))
+        inpainted_image = pipe(
             prompt=task.prompt,
-            image=source_image,
-            mask_image=mask_image,
-            height=source_image.size[1],
-            width=source_image.size[0],
+            image=image,
+            mask_image=mask,
+            height=image.size[1],
+            width=image.size[0],
             max_sequence_length=512,
             generator=torch.Generator("cpu").manual_seed(0),
         ).images[0]
 
         os.makedirs(output_dir, exist_ok=True)
-        output_path = os.path.join(output_dir, f"{task.task_id}.png")
-        image.save(output_path)
+        output_path = os.path.join(
+            output_dir,
+            datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+            f"{task.task_id}.png",
+        )
+        inpainted_image.save(output_path)
