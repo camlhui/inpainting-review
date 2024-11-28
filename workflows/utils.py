@@ -36,6 +36,7 @@ def load_and_preprocess_image(
 ) -> Image:
     image = Image.open(path)
     image = pad_to_square(image)
+    image = image.convert("RGB")
     image = image.resize(target_res)
     return image
 
@@ -44,5 +45,6 @@ def load_and_preprocess_mask(
     path: str, target_res: Tuple[int, int] = TARGET_RES
 ) -> Image:
     mask = load_and_preprocess_image(path, target_res=target_res)
-    mask = mask.convert("L").point(lambda x: 255 if x > 128 else 0, mode="1")
+    mask = mask.convert("L")
+    mask = mask.point(lambda x: 255 if x > 128 else 0, mode="1")
     return mask
