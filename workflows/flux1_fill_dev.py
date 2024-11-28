@@ -3,7 +3,7 @@ from typing import List
 
 from task_definitions import InpaintingTask, Models
 from workflows.model_loader import get_pipeline
-from utils import load_and_preprocess_image, load_and_preprocess_mask
+from workflows.utils import load_and_preprocess_image, load_and_preprocess_mask
 
 
 def run(tasks: List[InpaintingTask], output_dir: str):
