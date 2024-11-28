@@ -1,5 +1,6 @@
 from datetime import datetime
 import os
+import time
 from typing import List
 
 from task_definitions import InpaintingTask, Models
@@ -17,6 +18,9 @@ def run(tasks: List[InpaintingTask], output_dir: str):
     output_dir = os.path.join(output_dir, run_timestamp)
     os.makedirs(output_dir, exist_ok=True)
 
+    seed = int(time.time()) % 2**32
+    generator = torch.Generator("cpu").manual_seed(seed)
+
     for task in tasks:
         image = load_and_preprocess_image(os.path.join(data_dir, task.source_image))
         mask = load_and_preprocess_mask(os.path.join(data_dir, task.mask_image))
@@ -27,7 +31,7 @@ def run(tasks: List[InpaintingTask], output_dir: str):
             height=image.size[1],
             width=image.size[0],
             max_sequence_length=512,
-            generator=torch.Generator("cpu"),
+            generator=generator,
         ).images[0]
 
         output_path = os.path.join(output_dir, f"{task.task_id}.png")
