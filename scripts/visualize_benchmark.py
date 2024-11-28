@@ -7,6 +7,7 @@ import matplotlib
 import matplotlib.pyplot as plt
 
 from task_definitions import InpaintingTask
+from workflows.utils import load_and_preprocess_image, load_and_preprocess_mask
 
 
 def plot_tasks(tasks: List[InpaintingTask], output_path: str):
@@ -15,17 +16,20 @@ def plot_tasks(tasks: List[InpaintingTask], output_path: str):
     fig, axes = plt.subplots(nrows=len(tasks), ncols=3, figsize=(15, 5 * len(tasks)))
 
     for i, task in enumerate(tasks):
-        source_img = plt.imread(
+
+        image = load_and_preprocess_image(
             os.path.join(os.environ["DATA_DIR"], task["source_image"])
         )
-        axes[i, 0].imshow(source_img)
+        axes[i, 0].imshow(image)
         axes[i, 0].axis("off")
-        axes[i, 0].set_title("Source Image")
+        axes[i, 0].set_title("Source image")
 
-        mask_img = plt.imread(os.path.join(os.environ["DATA_DIR"], task["mask_image"]))
-        axes[i, 1].imshow(mask_img)
+        mask = load_and_preprocess_mask(
+            os.path.join(os.environ["DATA_DIR"], task["mask_image"])
+        )
+        axes[i, 1].imshow(mask)
         axes[i, 1].axis("off")
-        axes[i, 1].set_title("Mask Image")
+        axes[i, 1].set_title("Mask image")
 
         wrapped_prompt = textwrap.fill(task["prompt"], width=50)
         axes[i, 2].text(0.5, 0.5, wrapped_prompt, ha="center", va="center", wrap=True)
