@@ -49,10 +49,10 @@ def run(tasks: List[InpaintingTask], output_dir: str):
                 "An error occurred while processing the OpenAI API response"
             ) from e
 
-        os.makedirs(output_dir, exist_ok=True)
         output_path = os.path.join(
             output_dir,
             datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
             f"{task.task_id}.png",
         )
+        os.makedirs(os.path.dirname(output_path), exist_ok=True)
         inpainted_image.save(output_path)
