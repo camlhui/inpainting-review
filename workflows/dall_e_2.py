@@ -37,7 +37,7 @@ def run(tasks: List[InpaintingTask], output_dir: str):
         response = openai.Image.create_edit(
             image=image_to_bytes(image),
             mask=image_to_bytes(openai_mask),
-            prompt=task.promt,
+            prompt=task.prompt,
             n=1,
             size=f"{TARGET_RES[0]}x{TARGET_RES[1]}",
         )
