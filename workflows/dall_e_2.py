@@ -29,6 +29,9 @@ def _create_openai_mask(image: Image, mask: Image) -> Image:
 
 def run(tasks: List[InpaintingTask], output_dir: str):
     data_dir = os.environ["DATA_DIR"]
+    run_timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    output_dir = os.path.join(output_dir, run_timestamp)
+    os.makedirs(output_dir, exist_ok=True)
 
     for task in tasks:
         image = load_and_preprocess_image(os.path.join(data_dir, task.source_image))
@@ -49,10 +52,5 @@ def run(tasks: List[InpaintingTask], output_dir: str):
                 "An error occurred while processing the OpenAI API response"
             ) from e
 
-        output_path = os.path.join(
-            output_dir,
-            datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-            f"{task.task_id}.png",
-        )
-        os.makedirs(os.path.dirname(output_path), exist_ok=True)
+        output_path = os.path.join(output_dir, f"{task.task_id}.png")
         inpainted_image.save(output_path)

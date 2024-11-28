@@ -13,6 +13,10 @@ def run(tasks: List[InpaintingTask], output_dir: str):
     pipe = get_pipeline(model=Models.FLUX_1_FILL_DEV)
 
     data_dir = os.environ["DATA_DIR"]
+    run_timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    output_dir = os.path.join(output_dir, run_timestamp)
+    os.makedirs(output_dir, exist_ok=True)
+
     for task in tasks:
         image = load_and_preprocess_image(os.path.join(data_dir, task.source_image))
         mask = load_and_preprocess_mask(os.path.join(data_dir, task.mask_image))
@@ -26,10 +30,5 @@ def run(tasks: List[InpaintingTask], output_dir: str):
             generator=torch.Generator("cpu").manual_seed(0),
         ).images[0]
 
-        output_path = os.path.join(
-            output_dir,
-            datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-            f"{task.task_id}.png",
-        )
-        os.makedirs(os.path.dirname(output_path), exist_ok=True)
+        output_path = os.path.join(output_dir, f"{task.task_id}.png")
         inpainted_image.save(output_path)
