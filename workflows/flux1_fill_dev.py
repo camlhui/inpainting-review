@@ -27,7 +27,7 @@ def run(tasks: List[InpaintingTask], output_dir: str):
             height=image.size[1],
             width=image.size[0],
             max_sequence_length=512,
-            generator=torch.Generator("cpu").manual_seed(0),
+            generator=torch.Generator("cpu"),
         ).images[0]
 
         output_path = os.path.join(output_dir, f"{task.task_id}.png")
