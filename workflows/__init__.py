@@ -29,4 +29,4 @@ def run_workflow(model: Models, tasks: List[InpaintingTask]):
     output_dir = os.path.join(
         os.environ["DATA_DIR"], "outputs", model.value.replace("/", "_")
     )
-    workflow_module.run(model=model, tasks=tasks, output_dir=output_dir)
+    workflow_module.run(tasks=tasks, output_dir=output_dir)
