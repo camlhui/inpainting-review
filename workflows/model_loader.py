@@ -4,14 +4,14 @@ from diffusers import FluxFillPipeline, DiffusionPipeline
 import torch
 
 from task_definitions import Models
-from workflows.utils import assert_cuda_availability
+from workflows.utils import check_cuda_availability
 
 
 assert os.environ.get(
     "HUGGING_FACE_HUB_TOKEN"
 ), "HUGGING_FACE_HUB_TOKEN is not set or is empty"
 
-assert_cuda_availability()
+check_cuda_availability()
 
 
 _model_cache: Dict[Models, DiffusionPipeline] = {}

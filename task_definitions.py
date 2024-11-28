@@ -4,6 +4,9 @@ from typing import Optional
 from pydantic import BaseModel
 
 
+TARGET_RES = (1024, 1024)
+
+
 class Models(Enum):
     FLUX_1_FILL_DEV = "black-forest-labs/FLUX.1-Fill-dev"
 

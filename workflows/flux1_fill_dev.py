@@ -1,26 +1,22 @@
 import os
 from typing import List
 
-from diffusers.utils import load_image
-
 from task_definitions import InpaintingTask, Models
 from workflows.model_loader import get_pipeline
+from utils import load_and_preprocess_image, load_and_preprocess_mask
 
 
-def run(model: Models, tasks: List[InpaintingTask], output_dir: str):
+def run(tasks: List[InpaintingTask], output_dir: str):
     import torch
 
-    pipe = get_pipeline(model)
+    pipe = get_pipeline(model=Models.FLUX_1_FILL_DEV)
 
     data_dir = os.environ["DATA_DIR"]
     for task in tasks:
-        source_image = load_image(os.path.join(data_dir, task.source_image))
-        mask_image = (
-            load_image(os.path.join(data_dir, task.mask_image))
-            .convert("L")
-            .point(lambda x: 255 if x > 128 else 0, mode="1")
+        source_image = load_and_preprocess_image(
+            os.path.join(data_dir, task.source_image)
         )
-
+        mask_image = load_and_preprocess_mask(os.path.join(data_dir, task.mask_image))
         image = pipe(
             prompt=task.prompt,
             image=source_image,
