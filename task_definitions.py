@@ -8,6 +8,7 @@ TARGET_RES = (1024, 1024)
 
 
 class Models(Enum):
+    DALL_E_2 = "dall-e-2"
     FLUX_1_FILL_DEV = "black-forest-labs/FLUX.1-Fill-dev"
 
 
