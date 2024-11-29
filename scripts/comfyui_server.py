@@ -88,7 +88,7 @@ def start_comfyui_server():
         process = subprocess.Popen(
             [
                 "python",
-                os.path.join(os.environ.get(["COMFYUI_INSTALL_DIR"]), "main.py"),
+                os.path.join(os.environ.get("COMFYUI_INSTALL_DIR"), "main.py"),
             ],
             stdout=stdout_file,
             stderr=stderr_file,
