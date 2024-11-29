@@ -81,7 +81,7 @@ def start_comfyui_server():
     )
 
     assert os.environ.get(
-        ["COMFYUI_INSTALL_DIR"]
+        "COMFYUI_INSTALL_DIR"
     ), "Missing environment variable COMFYUI_INSTALL_DIR"
 
     try:
