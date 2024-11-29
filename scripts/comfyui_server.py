@@ -94,10 +94,24 @@ def start_comfyui_server(skip_dep_installation=False):
             stdout=stdout_file,
             stderr=stderr_file,
         )
-
         print(f"ComfyUI server started with PID {process.pid}")
         print(f"stdout redirected to: {stdout_file.name}")
         print(f"stderr redirected to: {stderr_file.name}")
+
+        while True:
+            stdout_line = process.stdout.readline()
+            stderr_line = process.stderr.readline()
+            if stdout_line:
+                print(f"[stdout]: {stdout_line.strip()}")
+            if stderr_line:
+                print(f"[stderr]: {stderr_line.strip()}")
+
+                if "To see the GUI go to: http://127.0.0.1:8188" in stderr_line:
+                    print("GUI URL detected. Server is ready.")
+                    break
+
+            if process.poll() is not None:
+                raise RuntimeError("ComfyUI server process exited unexpectedly.")
 
         return process, stdout_file.name, stderr_file.name
 
