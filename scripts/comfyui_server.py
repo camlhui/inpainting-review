@@ -70,8 +70,9 @@ def _print_and_cleanup_logs(stdout_file: str, stderr_file: str):
     print("\nTemporary log files have been deleted.")
 
 
-def start_comfyui_server():
-    _install_pip_dependencies()
+def start_comfyui_server(skip_dep_installation=False):
+    if not skip_dep_installation:
+        _install_pip_dependencies()
 
     stdout_file = tempfile.NamedTemporaryFile(
         delete=False, mode="w+", suffix=".log", prefix="comfyui_stdout_"
