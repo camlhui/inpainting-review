@@ -4,23 +4,29 @@ import tempfile
 
 
 PIP_DEPENDENCIES = dependencies = [
-    "accelerate",
-    "einops",
-    "transformers>=4.28.1",
-    "safetensors>=0.4.2",
-    "aiohttp",
-    "pyyaml",
-    "Pillow",
-    "scipy",
-    "tqdm",
-    "psutil",
-    "tokenizers>=0.13.3",
-    "torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121",
-    "torchsde",
-    "kornia>=0.7.1",
-    "spandrel",
-    "soundfile",
-    "sentencepiece",
+    ["accelerate"],
+    ["einops"],
+    ["transformers>=4.28.1"],
+    ["safetensors>=0.4.2"],
+    ["aiohttp"],
+    ["pyyaml"],
+    ["Pillow"],
+    ["scipy"],
+    ["tqdm"],
+    ["psutil"],
+    ["tokenizers>=0.13.3"],
+    [
+        "torch",
+        "torchvision",
+        "torchaudio",
+        "--index-url",
+        "https://download.pytorch.org/whl/cu121",
+    ],
+    ["torchsde"],
+    ["kornia>=0.7.1"],
+    ["spandrel"],
+    ["soundfile"],
+    ["sentencepiece"],
 ]
 
 
@@ -28,15 +34,15 @@ def _install_pip_dependencies():
     print("Installing pip dependencies")
     for dependency in dependencies:
         try:
-            print(f"Installing: {dependency}")
+            print(f"Installing: {' '.join(dependency)}")
             result = subprocess.run(
-                ["pip3", "install", dependency],
+                ["pip3", "install"] + dependency,
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE,
                 text=True,
             )
             if result.returncode != 0:
-                print(f"Failed to install {dependency}: {result.stderr}")
+                print(f"Failed to install {' '.join(dependency)}: {result.stderr}")
                 raise subprocess.CalledProcessError(
                     result.returncode,
                     result.args,
@@ -44,9 +50,9 @@ def _install_pip_dependencies():
                     stderr=result.stderr,
                 )
             else:
-                print(f"Successfully installed {dependency}")
+                print(f"Successfully installed {' '.join(dependency)}")
         except subprocess.CalledProcessError as e:
-            print(f"Error while installing {dependency}:\n{e.stderr}")
+            print(f"Error while installing {' '.join(dependency)}:\n{e.stderr}")
             raise
 
 
