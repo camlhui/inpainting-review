@@ -1,6 +1,7 @@
 import os
 import subprocess
 import tempfile
+import time
 
 
 PIP_DEPENDENCIES = dependencies = [
@@ -98,22 +99,28 @@ def start_comfyui_server(skip_dep_installation=False):
         print(f"stdout redirected to: {stdout_file.name}")
         print(f"stderr redirected to: {stderr_file.name}")
 
-        while True:
-            stdout_line = process.stdout.readline()
-            stderr_line = process.stderr.readline()
-            if stdout_line:
-                print(f"[stdout]: {stdout_line.strip()}")
-            if stderr_line:
-                print(f"[stderr]: {stderr_line.strip()}")
+        with open(stdout_file.name, "r") as stdout_reader, open(
+            stderr_file.name, "r"
+        ) as stderr_reader:
+            stdout_reader.seek(0, os.SEEK_END)  # Start reading from the end of the file
+            stderr_reader.seek(0, os.SEEK_END)
 
-                if "To see the GUI go to: http://127.0.0.1:8188" in stderr_line:
-                    print("GUI URL detected. Server is ready.")
-                    break
+            while True:
+                stdout_line = stdout_reader.readline()
+                stderr_line = stderr_reader.readline()
+                if stdout_line:
+                    print(f"[stdout]: {stdout_line.strip()}")
+                if stderr_line:
+                    print(f"[stderr]: {stderr_line.strip()}")
 
-            if process.poll() is not None:
-                raise RuntimeError("ComfyUI server process exited unexpectedly.")
+                    if "To see the GUI go to: http://127.0.0.1:8188" in stderr_line:
+                        print("GUI URL detected. Server is ready.")
+                        break
 
-        return process, stdout_file.name, stderr_file.name
+                if process.poll() is not None:
+                    raise RuntimeError("ComfyUI server process exited unexpectedly.")
+
+                time.sleep(0.1)
 
     except Exception as e:
         print(f"Failed to start ComfyUI server: {e}")
@@ -124,6 +131,8 @@ def start_comfyui_server(skip_dep_installation=False):
         )
         _print_and_cleanup_logs(stdout_file.name, stderr_file.name)
         raise
+
+    return process, stdout_file.name, stderr_file.name
 
 
 def stop_comfyui_server(process: subprocess.Popen, stdout_file: str, stderr_file: str):
