@@ -26,12 +26,27 @@ PIP_DEPENDENCIES = dependencies = [
 
 def _install_pip_dependencies():
     print("Installing pip dependencies")
-
     for dependency in dependencies:
         try:
-            subprocess.check_call(["pip3", "install", dependency])
+            print(f"Installing: {dependency}")
+            result = subprocess.run(
+                ["pip3", "install", dependency],
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+                text=True,
+            )
+            if result.returncode != 0:
+                print(f"Failed to install {dependency}: {result.stderr}")
+                raise subprocess.CalledProcessError(
+                    result.returncode,
+                    result.args,
+                    output=result.stdout,
+                    stderr=result.stderr,
+                )
+            else:
+                print(f"Successfully installed {dependency}")
         except subprocess.CalledProcessError as e:
-            print(f"Failed to install {dependency}: {e}")
+            print(f"Error while installing {dependency}:\n{e.stderr}")
             raise
 
 
