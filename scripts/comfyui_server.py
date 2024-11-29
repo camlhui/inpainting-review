@@ -95,9 +95,9 @@ def start_comfyui_server(skip_dep_installation=False):
             stdout=stdout_file,
             stderr=stderr_file,
         )
-        print(f"ComfyUI server started with PID {process.pid}")
+        print(f"\n\nComfyUI server started with PID {process.pid}")
         print(f"stdout redirected to: {stdout_file.name}")
-        print(f"stderr redirected to: {stderr_file.name}")
+        print(f"stderr redirected to: {stderr_file.name}\n\n")
 
         with open(stdout_file.name, "r") as stdout_reader, open(
             stderr_file.name, "r"
