@@ -8,9 +8,9 @@ from task_definitions import InpaintingTask, Models
 
 def _get_worfklow_module_name(model: Models) -> str:
     if model == Models.DALL_E_2:
-        module_name = "workflows.dall_e_2"
+        module_name = "workflows.api.dall_e_2"
     elif model == Models.FLUX_1_FILL_DEV:
-        module_name = "workflows.flux1_fill_dev"
+        module_name = "workflows.diffusers.flux1_fill_dev"
     else:
         raise ValueError(f"Unknown model, model: {model.value}")
 
