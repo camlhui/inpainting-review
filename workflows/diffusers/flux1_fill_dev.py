@@ -4,7 +4,7 @@ import time
 from typing import List
 
 from task_definitions import InpaintingTask, Models
-from workflows.model_loader import get_pipeline
+from workflows.diffusers.model_loader import get_pipeline
 from workflows.utils import load_and_preprocess_image, load_and_preprocess_mask
 
 
