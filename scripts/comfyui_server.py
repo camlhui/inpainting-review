@@ -218,9 +218,9 @@ def _start_cloudflared_tunnel(host: str, port: int, timeout=180):
         p.terminate() if p else None
 
 
-def start_comfyui(skip_installing_dep: bool = False):
+def start_comfyui(skip_dep_installation: bool = False):
 
-    if not skip_installing_dep:
+    if not skip_dep_installation:
         _install_comfyui_pip_dependencies()
         _install_cloudflared()
 
