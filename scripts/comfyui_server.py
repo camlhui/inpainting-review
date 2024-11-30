@@ -3,6 +3,7 @@ import socket
 import subprocess
 import tempfile
 import time
+from urllib.parse import urlparse
 
 
 COMFYUI_PIP_DEPENDENCIES = [
@@ -62,7 +63,7 @@ def _install_cloudflared():
 
 
 def _install_comfyui_pip_dependencies():
-    print("Installing ComfyUI pip dependencies")
+    print("Installing ComfyUI pip dependencies\n")
     for dependency in COMFYUI_PIP_DEPENDENCIES:
         try:
             print(f"Installing: {' '.join(dependency)}")
@@ -162,9 +163,10 @@ def _start_comfyui_server():
     return
 
 
-def _start_cloudflared_tunnel(host: str, port: int, timeout=180):
+def _start_cloudflared_tunnel(url: str, port: int, timeout=180):
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
-        result = sock.connect_ex((host, port))
+        ip_address = urlparse(url).hostname
+        result = sock.connect_ex((ip_address, port))
         if result == 0:
             print("Successful connection to ComfyUI server port")
 
@@ -172,7 +174,7 @@ def _start_cloudflared_tunnel(host: str, port: int, timeout=180):
 
     try:
         p = subprocess.Popen(
-            ["cloudflared", "tunnel", "--url", f"{host}:{port}"],
+            ["cloudflared", "tunnel", "--url", f"{url}:{port}"],
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
             text=True,
@@ -212,7 +214,7 @@ def start_comfyui(skip_installation: bool = False):
         _install_cloudflared()
 
     _start_comfyui_server()
-    _start_cloudflared_tunnel(host="http://127.0.0.1", port=8188)
+    _start_cloudflared_tunnel(url="http://127.0.0.1", port=8188)
 
 
 def stop_comfyui_server(process: subprocess.Popen, stdout_file: str, stderr_file: str):
