@@ -50,8 +50,7 @@ def _install_cloudflared():
         subprocess.run(
             [
                 "wget",
-                "https://github.com/cloudflare/cloudflared/releases/latest/\
-                download/cloudflared-linux-amd64.deb",
+                "https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64.deb",  # noqa: E501
             ],
             check=True,
         )
@@ -63,7 +62,7 @@ def _install_cloudflared():
 
 
 def _install_comfyui_pip_dependencies():
-    print("Installing pip dependencies")
+    print("Installing ComfyUI pip dependencies")
     for dependency in COMFYUI_PIP_DEPENDENCIES:
         try:
             print(f"Installing: {' '.join(dependency)}")
@@ -173,7 +172,7 @@ def _start_cloudflared_tunnel(host: str, port: int, timeout=180):
 
     try:
         p = subprocess.Popen(
-            ["cloudflared", "tunnel", "--url", f"http://{host}:{port}"],
+            ["cloudflared", "tunnel", "--url", f"{host}:{port}"],
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
             text=True,
@@ -206,14 +205,14 @@ def _start_cloudflared_tunnel(host: str, port: int, timeout=180):
     return
 
 
-def start_comfyui(skip_installation):
+def start_comfyui(skip_installation: bool = False):
 
     if not skip_installation:
         _install_comfyui_pip_dependencies()
         _install_cloudflared()
 
     _start_comfyui_server()
-    _start_cloudflared_tunnel()
+    _start_cloudflared_tunnel(host="http://127.0.0.1", port=8188)
 
 
 def stop_comfyui_server(process: subprocess.Popen, stdout_file: str, stderr_file: str):
