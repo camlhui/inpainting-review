@@ -32,6 +32,7 @@ COMFYUI_PIP_DEPENDENCIES = [
     ["spandrel"],
     ["soundfile"],
     ["sentencepiece"],
+    ["gguf"],
 ]
 
 
