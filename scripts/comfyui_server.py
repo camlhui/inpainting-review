@@ -1,4 +1,5 @@
 import os
+import re
 import socket
 import subprocess
 import tempfile
@@ -198,20 +199,23 @@ def _start_cloudflared_tunnel(host: str, port: int, timeout=180):
                 return
 
             if p and p.stderr:
+                print(p.stderr)
+
                 for line in iter(p.stderr.readline, ""):
                     if "trycloudflare.com" in line:
                         tunnel_url = line[line.find("http") :].strip()
-                        print(
-                            f"\n\nThis is the URL to access ComfyUI: {tunnel_url}\n\n"
+                        match = re.match(
+                            r"https:\/\/[a-z0-9-]+\.trycloudflare\.com", tunnel_url
                         )
+                        if match:
+                            print(f"\n\nYou can access ComfyUI at: {tunnel_url}\n\n")
+                            return
 
             time.sleep(1)
 
     except Exception as e:
         print(f"Error while launching Cloudflare tunnel: {e}")
         p.terminate() if p else None
-
-    return
 
 
 def start_comfyui(skip_installation: bool = False):
