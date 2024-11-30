@@ -5,6 +5,8 @@ import subprocess
 import tempfile
 import time
 
+import psutil
+
 
 COMFYUI_PIP_DEPENDENCIES = [
     ["accelerate"],
@@ -199,8 +201,6 @@ def _start_cloudflared_tunnel(host: str, port: int, timeout=180):
                 return
 
             if p and p.stderr:
-                print(p.stderr)
-
                 for line in iter(p.stderr.readline, ""):
                     if "trycloudflare.com" in line:
                         tunnel_url = line[line.find("http") :].strip()
@@ -218,9 +218,9 @@ def _start_cloudflared_tunnel(host: str, port: int, timeout=180):
         p.terminate() if p else None
 
 
-def start_comfyui(skip_installation: bool = False):
+def start_comfyui(skip_installing_dep: bool = False):
 
-    if not skip_installation:
+    if not skip_installing_dep:
         _install_comfyui_pip_dependencies()
         _install_cloudflared()
 
@@ -228,17 +228,20 @@ def start_comfyui(skip_installation: bool = False):
     _start_cloudflared_tunnel(host="127.0.0.1", port=8188)
 
 
-def stop_comfyui_server(process: subprocess.Popen, stdout_file: str, stderr_file: str):
-    if process and process.poll() is None:
-        print("Stopping the server...")
-        process.terminate()
-        process.wait()
-        print("Server stopped.")
+def stop_comfyui():
+    for p in psutil.process_iter(["pid", "name", "cmdline"]):
+        if "cloudflared" in p.info["name"]:
+            print(f"Terminating {p.info['name']} with PID {p.info['pid']}")
+            try:
+                p.terminate()
+                p.wait()
+            except Exception as e:
+                print(f"Failed to delete Cloudflared tunnel process, {e}")
 
-        print(
-            f"Attempting to print and delete logs from:\nstdout: {stdout_file}\
-            \nstderr: {stderr_file}\n"
-        )
-        _print_and_cleanup_logs(stdout_file, stderr_file)
-    else:
-        print("Server is not running or already stopped.")
+        if "comfyui" in "".join(p.info["cmdline"]).lower():
+            print(f"Terminating {p.info['name']} with PID {p.info['pid']}")
+            try:
+                p.terminate()
+                p.wait()
+            except Exception as e:
+                print(f"Failed to delete ComfyUI server process, {e}")
