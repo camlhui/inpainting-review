@@ -1,10 +1,11 @@
 import os
+import socket
 import subprocess
 import tempfile
 import time
 
 
-PIP_DEPENDENCIES = dependencies = [
+COMFYUI_PIP_DEPENDENCIES = [
     ["accelerate"],
     ["einops"],
     ["transformers>=4.28.1"],
@@ -31,9 +32,39 @@ PIP_DEPENDENCIES = dependencies = [
 ]
 
 
-def _install_pip_dependencies():
+def _install_cloudflared():
+    try:
+        result = subprocess.run(
+            ["cloudflared", "--version"],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            text=True,
+        )
+        if result.returncode == 0:
+            print("Cloudflared is already installed.")
+            return
+    except FileNotFoundError:
+        print("Cloudflared is not installed. Installing...")
+
+    try:
+        subprocess.run(
+            [
+                "wget",
+                "https://github.com/cloudflare/cloudflared/releases/latest/\
+                download/cloudflared-linux-amd64.deb",
+            ],
+            check=True,
+        )
+        subprocess.run(["dpkg", "-i", "cloudflared-linux-amd64.deb"], check=True)
+        print("Cloudflared installed successfully.")
+    except subprocess.CalledProcessError as e:
+        print(f"Error during cloudflared installation: {e}")
+        raise
+
+
+def _install_comfyui_pip_dependencies():
     print("Installing pip dependencies")
-    for dependency in dependencies:
+    for dependency in COMFYUI_PIP_DEPENDENCIES:
         try:
             print(f"Installing: {' '.join(dependency)}")
             result = subprocess.run(
@@ -71,10 +102,7 @@ def _print_and_cleanup_logs(stdout_file: str, stderr_file: str):
     print("\nTemporary log files have been deleted.")
 
 
-def start_comfyui_server(skip_dep_installation=False):
-    if not skip_dep_installation:
-        _install_pip_dependencies()
-
+def _start_comfyui_server():
     stdout_file = tempfile.NamedTemporaryFile(
         delete=False, mode="w+", suffix=".log", prefix="comfyui_stdout_"
     )
@@ -90,7 +118,7 @@ def start_comfyui_server(skip_dep_installation=False):
         process = subprocess.Popen(
             [
                 "python",
-                os.path.join(os.environ.get("COMFYUI_INSTALL_DIR"), "main.py"),
+                os.path.join(os.environ["COMFYUI_INSTALL_DIR"], "main.py"),
             ],
             stdout=stdout_file,
             stderr=stderr_file,
@@ -120,7 +148,7 @@ def start_comfyui_server(skip_dep_installation=False):
                 if process.poll() is not None:
                     raise RuntimeError("ComfyUI server process exited unexpectedly.")
 
-                time.sleep(0.1)
+                time.sleep(1)
 
     except Exception as e:
         print(f"Failed to start ComfyUI server: {e}")
@@ -132,7 +160,60 @@ def start_comfyui_server(skip_dep_installation=False):
         _print_and_cleanup_logs(stdout_file.name, stderr_file.name)
         raise
 
-    return process, stdout_file.name, stderr_file.name
+    return
+
+
+def _start_cloudflared_tunnel(host: str, port: int, timeout=180):
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
+        result = sock.connect_ex((host, port))
+        if result == 0:
+            print("Successful connection to ComfyUI server port")
+
+        print("ComfyUI server port isn't accessible")
+
+    try:
+        p = subprocess.Popen(
+            ["cloudflared", "tunnel", "--url", f"http://{host}:{port}"],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            text=True,
+        )
+
+        start_time = time.time()
+        while True:
+            elapsed_time = time.time() - start_time
+            if elapsed_time > timeout:
+                print(f"Timeout reached ({timeout}s). Cloudflared failed to start.")
+
+                # TODO: is it going to kill the process?
+                p.terminate()
+                return
+
+            if p and p.stderr:
+                for line in iter(p.stderr.readline, ""):
+                    if "trycloudflare.com" in line:
+                        tunnel_url = line[line.find("http") :].strip()
+                        print(
+                            f"\n\nThis is the URL to access ComfyUI: {tunnel_url}\n\n"
+                        )
+
+            time.sleep(1)
+
+    except Exception as e:
+        print(f"Error while launching Cloudflare tunnel: {e}")
+        p.terminate() if p else None
+
+    return
+
+
+def start_comfyui(skip_installation):
+
+    if not skip_installation:
+        _install_comfyui_pip_dependencies()
+        _install_cloudflared()
+
+    _start_comfyui_server()
+    _start_cloudflared_tunnel()
 
 
 def stop_comfyui_server(process: subprocess.Popen, stdout_file: str, stderr_file: str):
