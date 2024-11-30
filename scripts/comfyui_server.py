@@ -195,9 +195,8 @@ def _start_cloudflared_tunnel(host: str, port: int, timeout=180):
             elapsed_time = time.time() - start_time
             if elapsed_time > timeout:
                 print(f"Timeout reached ({timeout}s). Cloudflared failed to start.")
-
-                # TODO: is it going to kill the process?
                 p.terminate()
+                p.wait()
                 return
 
             if p and p.stderr:
