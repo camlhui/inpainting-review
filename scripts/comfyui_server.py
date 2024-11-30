@@ -3,7 +3,6 @@ import socket
 import subprocess
 import tempfile
 import time
-from urllib.parse import urlparse
 
 
 COMFYUI_PIP_DEPENDENCIES = [
@@ -102,17 +101,30 @@ def _print_and_cleanup_logs(stdout_file: str, stderr_file: str):
     print("\nTemporary log files have been deleted.")
 
 
+def _is_server_running(host: str = "127.0.0.1", port: int = 8188) -> bool:
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
+        result = sock.connect_ex((host, port))
+        if result == 0:
+            return True
+
+    return False
+
+
 def _start_comfyui_server():
+    assert os.environ.get(
+        "COMFYUI_INSTALL_DIR"
+    ), "Missing environment variable COMFYUI_INSTALL_DIR"
+
+    if _is_server_running():
+        print("ComfyUI server is already running.")
+        return
+
     stdout_file = tempfile.NamedTemporaryFile(
         delete=False, mode="w+", suffix=".log", prefix="comfyui_stdout_"
     )
     stderr_file = tempfile.NamedTemporaryFile(
         delete=False, mode="w+", suffix=".log", prefix="comfyui_stderr_"
     )
-
-    assert os.environ.get(
-        "COMFYUI_INSTALL_DIR"
-    ), "Missing environment variable COMFYUI_INSTALL_DIR"
 
     try:
         process = subprocess.Popen(
@@ -163,18 +175,13 @@ def _start_comfyui_server():
     return
 
 
-def _start_cloudflared_tunnel(url: str, port: int, timeout=180):
-    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
-        ip_address = urlparse(url).hostname
-        result = sock.connect_ex((ip_address, port))
-        if result == 0:
-            print("Successful connection to ComfyUI server port")
-
-        print("ComfyUI server port isn't accessible")
+def _start_cloudflared_tunnel(host: str, port: int, timeout=180):
+    if not _is_server_running(host, port):
+        raise RuntimeError(f"Server is not running on http://{host}:{port}")
 
     try:
         p = subprocess.Popen(
-            ["cloudflared", "tunnel", "--url", f"{url}:{port}"],
+            ["cloudflared", "tunnel", "--url", f"http://{host}:{port}"],
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
             text=True,
@@ -214,7 +221,7 @@ def start_comfyui(skip_installation: bool = False):
         _install_cloudflared()
 
     _start_comfyui_server()
-    _start_cloudflared_tunnel(url="http://127.0.0.1", port=8188)
+    _start_cloudflared_tunnel(host="127.0.0.1", port=8188)
 
 
 def stop_comfyui_server(process: subprocess.Popen, stdout_file: str, stderr_file: str):
