@@ -234,7 +234,7 @@ def stop_comfyui():
             print(f"Terminating {p.info['name']} with PID {p.info['pid']}")
             try:
                 p.terminate()
-                p.wait()
+                # p.wait()
             except Exception as e:
                 print(f"Failed to delete Cloudflared tunnel process, {e}")
 
@@ -242,6 +242,6 @@ def stop_comfyui():
             print(f"Terminating {p.info['name']} with PID {p.info['pid']}")
             try:
                 p.terminate()
-                p.wait()
+                # p.wait()
             except Exception as e:
                 print(f"Failed to delete ComfyUI server process, {e}")
