@@ -1,7 +1,7 @@
 {
   "3": {
     "inputs": {
-      "seed": 848428727867133,
+      "seed": 273524981104836,
       "steps": 20,
       "cfg": 8,
       "sampler_name": "uni_pc_bh2",
@@ -31,7 +31,7 @@
   },
   "6": {
     "inputs": {
-      "text": "closeup photograph of maine coon (cat:1.2) in the yosemite national park mountains nature",
+      "text": "closeup photograph of maine coon in the bedroom next to the bed",
       "clip": [
         "29",
         1
@@ -86,7 +86,7 @@
   },
   "20": {
     "inputs": {
-      "image": "yosemite_inpaint_example.png",
+      "image": "bedroom1.jpg",
       "upload": "image"
     },
     "class_type": "LoadImage",
@@ -96,7 +96,7 @@
   },
   "26": {
     "inputs": {
-      "grow_mask_by": 6,
+      "grow_mask_by": 8,
       "pixels": [
         "20",
         0
@@ -106,8 +106,8 @@
         2
       ],
       "mask": [
-        "20",
-        1
+        "30",
+        0
       ]
     },
     "class_type": "VAEEncodeForInpaint",
@@ -122,6 +122,17 @@
     "class_type": "CheckpointLoaderSimple",
     "_meta": {
       "title": "Load Checkpoint"
+    }
+  },
+  "30": {
+    "inputs": {
+      "image": "bedroom1_lamp_mask.png",
+      "channel": "green",
+      "upload": "image"
+    },
+    "class_type": "LoadImageMask",
+    "_meta": {
+      "title": "Load Image (as Mask)"
     }
   }
 }
