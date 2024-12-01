@@ -9,6 +9,7 @@ description = "A project to review inpainting workflows."
 dependencies = [
     "accelerate==1.1.1",
     "aiohttp==3.11.2",
+    "click==8.1.7",
     "einops==0.8.0",
     "gguf==0.10.0",
     "kornia>=0.7.1",
@@ -31,7 +32,7 @@ dependencies = [
 ]
 
 [project.scripts]
-comfy2py = "app.comfyui.comfy2py:main"
+comfy2py = "app.comfyui.comfy2py:cli"
 
 [tool.setuptools.packages.find]
 where = ["src"]
