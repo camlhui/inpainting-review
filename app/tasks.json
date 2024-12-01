@@ -1,0 +1,67 @@
+{
+    "tasks": [
+        {
+            "task_id": "dishes_in_china_cabinet",
+            "source_image": "source/china_cabinet.png",
+            "mask_image": "mask/china_cabinet.png",
+            "prompt": "A white china cabinet with glass doors showcasing ceramic dishes, bowls, and teapots. Plates and bowls are symmetrically stacked on the top shelves, teapots and pitchers are neatly arranged in the middle, and the bottom holds dinner plates and serving bowls. The minimal, refined style is illuminated by soft natural light.",
+            "negative_prompt": "Cluttered arrangement, mismatched colors, abstract dishes, unrealistic ceramics, dark lighting."
+        },
+        {
+            "task_id": "green_plant_on_cabinet",
+            "source_image": "source/cabinet.png",
+            "mask_image": "mask/cabinet_green_plant.png",
+            "prompt": "A trailing green plant with heart-shaped leaves cascading naturally. The plant is in a ceramic pot with a glossy finish, mounted on the side of a wooden cabinet. The leaves' white variegation adds elegance. Soft natural light highlights the details.",
+            "negative_prompt": "Artificial-looking plants, tangled vines, unrealistic textures, overly bright colors, low detail."
+        },
+        {
+            "task_id": "carpet_in_corridor",
+            "source_image": "source/corridor.png",
+            "mask_image": "mask/corridor_carpet.png",
+            "prompt": "A beige and cream rug with floral patterns and a geometric border. The carpet's delicate fringes and balanced design create a classic and elegant look, complementing the refined interior. The color palette is neutral and harmonious.",
+            "negative_prompt": "Bright colors, abstract patterns, thick textures, asymmetrical design, lack of fringes."
+        },
+        {
+            "task_id": "taxi_picture_in_study",
+            "source_image": "source/study_room.png",
+            "mask_image": "mask/study_room_picture.png",
+            "prompt": "A framed photo of yellow taxis on a rainy NYC street. The silver metal frame is sleek and modern, complementing the urban aesthetic. The scene captures taxis, wet pavement reflections, skyscrapers, and traffic lights.",
+            "negative_prompt": "Wooden frames, ornate designs, unclear taxi images, low-quality rendering, dull lighting."
+        },
+        {
+            "task_id": "towel_holder_with_mirror",
+            "source_image": "source/bathroom.png",
+            "mask_image": "mask/bathroom_green_plant.png",
+            "prompt": "A minimalist bamboo towel holder with a rectangular base and clean lines. It features three horizontal bars with neatly draped white towels bordered in black. Soft natural light highlights the bamboo's warmth and towels' texture.",
+            "negative_prompt": "Metal towel holders, cluttered design, uneven towels, overly ornate styles."
+        },
+        {
+            "task_id": "twin_bed_lamps",
+            "source_image": "source/bedroom.png",
+            "mask_image": "mask/bedroom_lamp.png",
+            "prompt": "Two matching bedside lamps with white ceramic teardrop bases and beige fabric shades. The lamps are placed symmetrically on each side of the bed, creating a cozy and inviting ambiance.",
+            "negative_prompt": "Mismatched lamps, asymmetrical placement, ornate designs, cluttered tables."
+        },
+        {
+            "task_id": "orchid_on_table_1",
+            "source_image": "source/dining_room_table1.png",
+            "mask_image": "mask/dining_room_table1_orchids.png",
+            "prompt": "A floral centerpiece with white orchids in a rectangular black planter. The orchids have slender stems, delicate blossoms, buds, and thin twisting branches. The arrangement aligns perfectly with the table's long axis.",
+            "negative_prompt": "Misaligned arrangement, mismatched flowers, cluttered table, ornate planters, dim lighting."
+        },
+        {
+            "task_id": "orchid_on_table_2",
+            "source_image": "source/dining_room_table2.png",
+            "mask_image": "mask/dining_room_table2_orchids.png",
+            "prompt": "White orchids in a sleek black planter aligned with the table. Slender stems and delicate blossoms create an elegant centerpiece. Twisting branches and buds complete the arrangement.",
+            "negative_prompt": "Misaligned arrangement, mismatched flowers, cluttered table, ornate planters, dim lighting."
+        },
+        {
+            "task_id": "foosball_in_sunlight",
+            "source_image": "source/living_room_sunlight.png",
+            "mask_image": "mask/living_room_sunlight_large.png",
+            "prompt": "A modern foosball table with a light wood finish and black legs. The table features black-and-white players, ergonomic handles, and a ball retrieval slot. It is placed parallel to the window, bathed in natural light.",
+            "negative_prompt": "Plastic foosball tables, cluttered surroundings, uneven placement, unnatural lighting."
+        }
+    ]
+}
