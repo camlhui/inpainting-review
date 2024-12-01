@@ -4,8 +4,11 @@ from typing import List
 import matplotlib
 import matplotlib.pyplot as plt
 
-from app.models import InpaintingTask
-from app.utils.image import load_and_preprocess_image, load_and_preprocess_mask
+from inpainting_review.models import InpaintingTask
+from inpainting_review.utils.image import (
+    load_and_preprocess_image,
+    load_and_preprocess_mask,
+)
 
 
 def plot_tasks(tasks: List[InpaintingTask], output_path: str):

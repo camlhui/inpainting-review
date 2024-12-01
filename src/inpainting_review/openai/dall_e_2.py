@@ -7,8 +7,8 @@ from typing import List
 from diffusers.utils import load_image
 import openai
 
-from app.models import InpaintingTask
-from app.utils.image import (
+from inpainting_review.models import InpaintingTask
+from inpainting_review.utils.image import (
     load_and_preprocess_image,
     load_and_preprocess_mask,
     image_to_bytes,
