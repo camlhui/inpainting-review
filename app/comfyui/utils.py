@@ -61,7 +61,7 @@ def submit_workflow(workflow: dict) -> str:
         "COMFYUI_API_URL"
     ), "Missing environment variable COMFYUI_API_URL."
     response = requests.post(
-        f"{os.environ['COMFYUI_INSTALL_DIR']}/api/prompt",
+        f"{os.environ['COMFYUI_API_URL']}/api/prompt",
         headers={"Content-Type": "application/json"},
         data=json.dumps(workflow).encode("utf-8"),
     )
@@ -78,9 +78,7 @@ def wait_for_workflow_completion(workflow_id: str, timeout: int = 1800) -> dict:
         if elapsed_time > timeout:
             raise TimeoutError(f"Workflow execution timed out after {timeout} seconds.")
 
-        queue_state = requests.get(
-            f"{os.environ['COMFYUI_INSTALL_DIR']}/api/queue"
-        ).json()
+        queue_state = requests.get(f"{os.environ['COMFYUI_API_URL']}/api/queue").json()
         running_workflow_ids = {record[1] for record in queue_state["queue_running"]}
         pending_workflow_ids = {record[1] for record in queue_state["queue_pending"]}
 
@@ -88,7 +86,7 @@ def wait_for_workflow_completion(workflow_id: str, timeout: int = 1800) -> dict:
             workflow_id in running_workflow_ids or workflow_id in pending_workflow_ids
         ):
             reponse = requests.get(
-                f"{os.environ['COMFYUI_INSTALL_DIR']}/api/history/{workflow_id}"
+                f"{os.environ['COMFYUI_API_URL']}/api/history/{workflow_id}"
             ).json()
             return list(reponse.values())[0]
 
