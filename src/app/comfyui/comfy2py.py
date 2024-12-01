@@ -17,6 +17,7 @@ def cli():
 def start():
     """Start the ComfyUI server."""
     start_server()
+    click.echo("Server and tunnel started successfully.")
 
 
 @cli.command()
