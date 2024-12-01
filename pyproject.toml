@@ -36,3 +36,6 @@ comfy2py = "app.comfyui.comfy2py:cli"
 
 [tool.setuptools.packages.find]
 where = ["src"]
+
+[tool.setuptools.package-data]
+"*" = ["**/*.json"]
