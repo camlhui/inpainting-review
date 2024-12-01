@@ -1,10 +1,10 @@
 import click
-from app.comfyui.server import (
+from inpainting_review.comfyui.server import (
     start as start_server,
     stop as stop_server,
     flush as flush_gpu_memory,
 )
-from app.comfyui.workflow import run_workflow
+from inpainting_review.comfyui.workflow import run_workflow
 
 
 @click.group()

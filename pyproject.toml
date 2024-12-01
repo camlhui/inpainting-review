@@ -32,7 +32,7 @@ dependencies = [
 ]
 
 [project.scripts]
-comfy2py = "app.comfyui.comfy2py:cli"
+comfy2py = "inpainting_review.comfyui.comfy2py:cli"
 
 [tool.setuptools.packages.find]
 where = ["src"]

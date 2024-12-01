@@ -3,7 +3,7 @@ import os
 from typing import Optional
 
 
-from app.comfyui.utils import (
+from inpainting_review.comfyui.utils import (
     retrieve_output_file,
     submit_workflow,
     update_workflow_parameters,
