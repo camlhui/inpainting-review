@@ -171,7 +171,9 @@ def _start_cloudflared_tunnel(host: str, port: int, timeout=180):
 def start():
     _install_cloudflared()
     _start_comfyui_server()
+    print("ComfyUI server started")
     _start_cloudflared_tunnel(host="127.0.0.1", port=8188)
+    print("Cloudflared tunnel in place")
 
 
 def flush():
