@@ -1,4 +1,5 @@
 from datetime import datetime
+import json
 import os
 from PIL import Image
 from typing import List
@@ -29,10 +30,14 @@ def _create_openai_mask(image: Image, mask: Image) -> Image:
     return image
 
 
-def run(tasks: List[InpaintingTask], output_dir: str):
+def run(tasks: List[InpaintingTask]):
+    assert os.environ.get("DATA_DIR"), "Missing environment variable DATA_DIR"
     data_dir = os.environ["DATA_DIR"]
+
     run_timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    output_dir = os.path.join(output_dir, run_timestamp)
+    output_dir = os.path.join(
+        os.environ["DATA_DIR"], "outputs", "dall-e-2", run_timestamp
+    )
     os.makedirs(output_dir, exist_ok=True)
 
     for task in tasks:
@@ -56,3 +61,10 @@ def run(tasks: List[InpaintingTask], output_dir: str):
 
         output_path = os.path.join(output_dir, f"{task.task_id}.png")
         inpainted_image.save(output_path)
+
+
+if __name__ == "__main__":
+    with open("../task-config.json") as f:
+        tasks = json.load(f)["tasks"]
+
+    run(tasks)
