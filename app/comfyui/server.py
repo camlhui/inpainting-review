@@ -1,3 +1,4 @@
+import json
 import os
 import re
 import socket
@@ -6,34 +7,7 @@ import tempfile
 import time
 
 import psutil
-
-
-COMFYUI_PIP_DEPENDENCIES = [
-    ["accelerate"],
-    ["einops"],
-    ["transformers>=4.28.1"],
-    ["safetensors>=0.4.2"],
-    ["aiohttp"],
-    ["pyyaml"],
-    ["Pillow"],
-    ["scipy"],
-    ["tqdm"],
-    ["psutil"],
-    ["tokenizers>=0.13.3"],
-    [
-        "torch",
-        "torchvision",
-        "torchaudio",
-        "--index-url",
-        "https://download.pytorch.org/whl/cu121",
-    ],
-    ["torchsde"],
-    ["kornia>=0.7.1"],
-    ["spandrel"],
-    ["soundfile"],
-    ["sentencepiece"],
-    ["gguf"],
-]
+import requests
 
 
 def _install_cloudflared():
@@ -63,32 +37,6 @@ def _install_cloudflared():
     except subprocess.CalledProcessError as e:
         print(f"Error during cloudflared installation: {e}")
         raise
-
-
-def _install_comfyui_pip_dependencies():
-    print("Installing ComfyUI pip dependencies\n")
-    for dependency in COMFYUI_PIP_DEPENDENCIES:
-        try:
-            print(f"Installing: {' '.join(dependency)}")
-            result = subprocess.run(
-                ["pip3", "install"] + dependency,
-                stdout=subprocess.PIPE,
-                stderr=subprocess.PIPE,
-                text=True,
-            )
-            if result.returncode != 0:
-                print(f"Failed to install {' '.join(dependency)}: {result.stderr}")
-                raise subprocess.CalledProcessError(
-                    result.returncode,
-                    result.args,
-                    output=result.stdout,
-                    stderr=result.stderr,
-                )
-            else:
-                print(f"Successfully installed {' '.join(dependency)}")
-        except subprocess.CalledProcessError as e:
-            print(f"Error while installing {' '.join(dependency)}:\n{e.stderr}")
-            raise
 
 
 def _print_and_cleanup_logs(stdout_file: str, stderr_file: str):
@@ -218,13 +166,25 @@ def _start_cloudflared_tunnel(host: str, port: int, timeout=180):
         p.terminate() if p else None
 
 
-def start(skip_dep_installation: bool = False):
-    if not skip_dep_installation:
-        _install_comfyui_pip_dependencies()
-        _install_cloudflared()
-
+def start():
+    _install_cloudflared()
     _start_comfyui_server()
     _start_cloudflared_tunnel(host="127.0.0.1", port=8188)
+
+
+def flush():
+    assert os.environ.get(
+        "COMFYUI_API_URL"
+    ), "Missing environment variable COMFYUI_API_URL."
+    response = requests.post(
+        f"{os.environ['COMFYUI_API_URL']}/api/free",
+        headers={"Content-Type": "application/json"},
+        data=json.dumps({"unload_models": True, "free_memory": True}).encode("utf-8"),
+    )
+    if response.status_code != 200:
+        raise RuntimeError(f"Failed to flush: {response.text}")
+    else:
+        print("Flush successful.")
 
 
 def stop():

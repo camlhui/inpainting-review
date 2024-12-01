@@ -1,4 +1,3 @@
-import argparse
 import json
 import os
 from typing import Optional
@@ -16,7 +15,7 @@ from app.comfyui.utils import (
 INPAINTING_WOKFLOWS = {"flux-1-fill-dev", "stable-diffusion-2-inpainting"}
 
 
-def _submit_inpainting_workflow(
+def run_workflow(
     name: str,
     image_path: str,
     mask_path: str,
@@ -55,40 +54,3 @@ def _submit_inpainting_workflow(
     )
 
     retrieve_output_file(completed_workflow=completed_workflow, output_path=output_path)
-
-
-def submit():
-    parser = argparse.ArgumentParser(
-        description="Submit an inpainting workflow for processing."
-    )
-    parser.add_argument(
-        "name", type=str, help="Name of the inpainting workflow to use."
-    )
-    parser.add_argument("image_path", type=str, help="Path to the input image file.")
-    parser.add_argument("mask_path", type=str, help="Path to the mask image file.")
-    parser.add_argument("output_path", type=str, help="Path to save the output image.")
-    parser.add_argument(
-        "--prompt", type=str, default="", help="Positive prompt for the workflow."
-    )
-    parser.add_argument(
-        "--neg_prompt", type=str, default="", help="Negative prompt for the workflow."
-    )
-    parser.add_argument(
-        "--steps", type=int, default=None, help="Number of steps for the workflow."
-    )
-    parser.add_argument(
-        "--timeout", type=int, default=1800, help="Timeout for the workflow completion."
-    )
-
-    args = parser.parse_args()
-
-    _submit_inpainting_workflow(
-        name=args.name,
-        image_path=args.image_path,
-        mask_path=args.mask_path,
-        output_path=args.output_path,
-        prompt=args.prompt,
-        neg_prompt=args.neg_prompt,
-        steps=args.steps,
-        timeout=args.timeout,
-    )
