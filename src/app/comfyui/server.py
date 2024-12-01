@@ -86,7 +86,6 @@ def _start_comfyui_server():
             ],
             stdout=stdout_file,
             stderr=stderr_file,
-            start_new_session=True,
         )
         print(f"\n\nComfyUI server started with PID {process.pid}")
         print(f"stdout redirected to: {stdout_file.name}")
@@ -138,7 +137,6 @@ def _start_cloudflared_tunnel(host: str, port: int, timeout=180):
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
             text=True,
-            start_new_session=True,
         )
 
         start_time = time.time()
