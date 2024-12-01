@@ -63,7 +63,7 @@ def submit_workflow(workflow: dict) -> str:
     response = requests.post(
         f"{os.environ['COMFYUI_API_URL']}/api/prompt",
         headers={"Content-Type": "application/json"},
-        data=json.dumps(workflow).encode("utf-8"),
+        data=json.dumps({"prompt": workflow}).encode("utf-8"),
     )
     if response.status_code != 200:
         raise RuntimeError(f"Failed to submit workflow: {response.text}")
@@ -103,5 +103,7 @@ def retrieve_output_file(completed_workflow: dict, output_path: str):
 
     output_filename = images[0]["filename"]
     comfyui_output_dir = os.path.join(os.environ["COMFYUI_INSTALL_DIR"], "output")
-    output_path = os.path.join(comfyui_output_dir, output_filename)
-    shutil.copy(comfyui_output_dir, output_path)
+    comfyui_output_file = os.path.join(comfyui_output_dir, output_filename)
+
+    os.makedirs(os.path.dirname(output_path), exist_ok=True)
+    shutil.copy(comfyui_output_file, output_path)
