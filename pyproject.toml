@@ -26,7 +26,6 @@ dependencies = [
     "soundfile==0.12.1",
     "spandrel==0.4.0",
     "tokenizers>=0.13.3",
-    "torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121",
     "torchsde==0.2.6",
     "transformers>=4.28.1",
     "tqdm==4.66.6"
@@ -34,3 +33,6 @@ dependencies = [
 
 [project.scripts]
 comfy2pi = "app.comfyui.cli:cli"
+
+[tool.setuptools.packages.find]
+where = ["src"]

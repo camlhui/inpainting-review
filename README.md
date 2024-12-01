@@ -19,6 +19,11 @@ It's best to install ComfyUI with ComfyUI manager. As part of this benchmark we 
 
 Installation instructions are provided in https://github.com/ltdrdata/ComfyUI-Manager/blob/main/notebooks/comfyui_colab_with_manager.ipynb.
 
+### Pytorch
+
+```bash
+   pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121
+```
 
 ### Download models
 
