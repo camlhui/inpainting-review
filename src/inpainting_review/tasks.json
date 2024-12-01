@@ -62,6 +62,13 @@
             "mask_image": "mask/living_room_sunlight_large.png",
             "prompt": "A modern foosball table with a light wood finish and black legs. The table features black-and-white players, ergonomic handles, and a ball retrieval slot. It is placed parallel to the window, bathed in natural light.",
             "negative_prompt": "Plastic foosball tables, cluttered surroundings, uneven placement, unnatural lighting."
+        },
+        {
+            "task_id": "chair_in_sunlight",
+            "source_image": "source/living_room_sunlight.png",
+            "mask_image": "mask/living_room_sunlight_large.png",
+            "prompt": "A handcrafted wooden chair in St. Remy style, bathed in sunlight, with a thin blue cushion on the seat. The sunlight casts soft, realistic shadows, highlighting the intricate wooden details and warm tones of the room.",
+            "negative_prompt": "Blurred details, inconsistent lighting, harsh or unrealistic shadows, overly bright colors, bulky cushion, modern chair design, cluttered background, and unnatural proportions."
         }
     ]
 }
