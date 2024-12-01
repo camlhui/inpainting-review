@@ -30,7 +30,7 @@ def run_workflow(
             f"Invalid workflow name: {name}. Available workflows: {', '.join(INPAINTING_WOKFLOWS)}"  # noqa: E501
         )
 
-    filepath = f"./workflows/{name}.json"
+    filepath = os.path.join(os.path.dirname(__file__), "workflows", f"{name}.json")
     if not os.path.exists(filepath):
         raise FileNotFoundError(f"Workflow file not found: {filepath}")
 
