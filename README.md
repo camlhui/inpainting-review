@@ -12,7 +12,7 @@ In this context we will review here how current available solutions address chal
 ## Benchmark dataset
 
 ![Benchmark sample](/images/benchmark_sample.png)
-> 👀 Please check [all the benchmark samples](/images/benchmark.png)
+> 👀 Please check [all the benchmark samples](/images/benchmark_full.png)
 
 
 Our benchmark dataset consists of ten carefully designed samples (image, mask, prompts), selected to evaluate the performance of different solutions across a range of quality and reliability criteria. These include:
