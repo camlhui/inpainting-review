@@ -1,34 +1,27 @@
-# README
+# Image inpainting
 
-TODO: quick intro about inpainting potential impact.
+## Introduction
 
-In this repository we will review different solutions to perform image inpainting.
+> Inpainting replaces or edits specific areas of an image. This makes it a useful tool for image restoration like removing defects and artifacts, or even replacing an image area with something entirely new. Inpainting relies on a mask to determine which regions of an image to fill in.
+https://huggingface.co/docs/diffusers/using-diffusers/inpaint
 
-We will focus on furniture images.
+Recent advances in AI have enabled the generation of high-resolution, realistic images on demand through various guidance techniques such as text prompts and images. These breakthroughs are set to revolutionize industries like e-commerce, fashion, real estate, marketing, and the arts. Essentially, it automates, scales and extends capabilities traditionally provided by tools like Photoshop, unlocking new levels of creativity and efficiency.
 
-You can find the benchmark result in TODO
+In this context we will review here how current available solutions address challenges posed by furniture image editing with a focus on new objects addition to enhance or accessorize existing furniture displays.
 
-As part of this benchmark exercise inpainting workflows were run with ComfyUI on Google Colab using a NVIDIA A100 GPU backend. Instructions are given below to run those workflows yourself.
+## Benchmark dataset
+
+![Benchmark visualization](/images/benchmark_sample.png)
+
+Our benchmark dataset consists of ten carefully designed samples (image, mask, prompts), selected to evaluate the performance of different solutions across a range of quality and reliability criteria. These include:
+- **Realism**, how natural and lifelike the inpainted regions appear.
+- **Adaptability**, the ability to adhere to complex and diverse instructions
+- **Unmask image preservation**, ensuring the unedited parts of the image remain unaffected.
+- **Consistency** with unmasked areas, icluding alignment in lighting, reflections, shadows, style, perspective, and textures.
+
+## Techniques
 
 
-## Setup
 
-### Install ComfyUI
 
-It's best to install ComfyUI with ComfyUI manager. As part of this benchmark we have installed it on Google Drive and used it from Google Colab.
-
-Installation instructions are provided in https://github.com/ltdrdata/ComfyUI-Manager/blob/main/notebooks/comfyui_colab_with_manager.ipynb.
-
-### Pytorch
-
-```bash
-   pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121
-```
-
-### Download models
-
-###
-
-## Workflow execution
-
-In this repository we are providing a CLI to operate ComfyUI in a programmatic manner. It's built on top of ComfyUI API and can be used parallely to the Web UI.
+### Results
