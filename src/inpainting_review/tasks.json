@@ -66,9 +66,9 @@
         {
             "task_id": "chair_in_sunlight",
             "source_image": "source/living_room_sunlight.png",
-            "mask_image": "mask/living_room_sunlight_large.png",
-            "prompt": "A handcrafted wooden chair in St. Remy style, bathed in sunlight, with a thin blue cushion on the seat. The sunlight casts soft, realistic shadows, highlighting the intricate wooden details and warm tones of the room.",
-            "negative_prompt": "Blurred details, inconsistent lighting, harsh or unrealistic shadows, overly bright colors, bulky cushion, modern chair design, cluttered background, and unnatural proportions."
+            "mask_image": "mask/living_room_sunlight_mask.png",
+            "prompt": "A handcrafted wooden chair inspired by the St. Remy style, featuring a classic curved backrest and an X-shaped crossbar design. The chair is positioned to face a sunlit window in a cozy living room, with a thin, elegant blue cushion resting on its woven seat. Warm sunlight streams through the window, highlighting the smooth wooden grain and casting soft, natural shadows on the polished floor.",
+            "negative_prompt": "Blurred or inconsistent details, harsh or overly dramatic shadows, cluttered or modern backgrounds, overly saturated colors, bulky or thick cushions, non-traditional or modern chair designs, and the chair facing away from the window."
         }
     ]
 }
