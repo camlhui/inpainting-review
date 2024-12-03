@@ -36,4 +36,16 @@ Model
 - architecture
 -
 
-## Results
+## Model evaluation
+
+> 👀 For each benchmark sample 3 model predictions are available in the following [figures](/images/results)
+
+Models will be scored based on 6 evaluation criteria:
+- Realism, how natural and lifelike does the inpainted region appear?
+- Adaptability, does the inpainting align with the provided prompts or instructions?
+- Unmask image preservation, Are the unmasked parts of the image left intact?
+- Consistency, is the inpainted region consistent with the unmasked area in terms of lighting (shadows, brightness), reflections, style, perspective, textures, structure?
+- Reproducibility, are the outputs stable in quality and alignment across the trials?
+- Performance and costs, how long does it take to generate results, what are the GPU requirements?
+
+TODO resolution?
