@@ -40,7 +40,7 @@ Model
 
 > 👀 For each benchmark sample 3 model predictions are available in the following [figures](/images/results)
 
-Models will be scored based on 6 evaluation criteria:
+We evaluate model predictions based on the following criteria:
 - Realism, how natural and lifelike does the inpainted region appear?
 - Adaptability, does the inpainting align with the provided prompts or instructions?
 - Unmask image preservation, Are the unmasked parts of the image left intact?
@@ -48,4 +48,21 @@ Models will be scored based on 6 evaluation criteria:
 - Reproducibility, are the outputs stable in quality and alignment across the trials?
 - Performance and costs, how long does it take to generate results, what are the GPU requirements?
 
-TODO resolution?
+
+| Model                                              | Realism        | Adaptability   | Consistency    | Unmask preservation | Reproducibility | GPU memory <br> (GB) | Inference time <br> (s/image) | Cost <br> ($/1k edits) |
+|----------------------------------------------------|----------------|----------------|----------------|----------------------|-----------------|-----------------------|---------------------|------------------------|
+| *FLUX.1-Fill-dev*                                  | ⭐⭐⭐☆          | ⭐⭐⭐⭐          | ⭐⭐⭐☆          | ⭐⭐⭐⭐               | ⭐⭐⭐⭐           | 38                    | 26.5                | 8.8                      |
+| *FLUX.1-Fill-dev-nf4*                              | ⭐⭐⭐☆          | ⭐⭐⭐⭐          | ⭐⭐⭐☆          | ⭐⭐⭐⭐               | ⭐⭐⭐⭐           | 20                    | 26.5                | 8.8                      |
+| *FLUX.1-dev-Controlnet-Inpainting-Beta*           | ⭐⭐☆☆          | ⭐⭐☆☆          | ⭐⭐⭐☆          | ⭐⭐⭐⭐               | ⭐⭐⭐☆           | 39                     | 14.7                | 4,9                      |
+| *FLUX.1-dev-Controlnet-Inpainting-Beta-Turbo*     | ⭐⭐☆☆          | ⭐⭐☆☆          | ⭐⭐☆☆          | ⭐⭐⭐⭐               | ⭐⭐⭐☆           | 40                    | 4.5                 | 1,5                      |
+| *dall-e-2*                                        | ⭐⭐☆☆          | ⭐☆☆☆          | ⭐⭐☆☆          | ⭐⭐⭐⭐               | ⭐⭐☆☆           | -                     | 14.5                | 20                     |
+| *stable-diffusion-xl-1.0-inpainting-0.1*          | ⭐⭐☆☆          | ⭐☆☆☆          | ⭐⭐☆☆          | ⭐☆☆☆               | ⭐⭐☆☆           | 10                    | 2.1                 | 0.7                      |
+| *stable-diffusion-2-inpainting*                   | ⭐☆☆☆          | ⭐☆☆☆          | ⭐☆☆☆          | ⭐☆☆☆               | ⭐⭐☆☆           | 4                     | 1.3                 | 0.4                      |
+| *kandinsky-2-2-decoder-inpaint*                   | ⭐⭐☆☆          | ⭐☆☆☆          | ⭐☆☆☆          | ⭐☆☆☆               | ⭐☆☆☆           | 13                    | 9.3                 | 3.1                      |
+| *controlnet-canny-sdxl-1.0*                       | ☆☆☆☆          | ⭐☆☆☆          | ☆☆☆☆          | ⭐⭐⭐☆               | ⭐⭐⭐☆           | 17                    | 3.3                 | 1.1                      |
+| *SD3-Controlnet-Inpainting*                       | ☆☆☆☆          | ⭐⭐☆☆          | ⭐☆☆☆          | ☆☆☆☆               | ⭐⭐☆☆           | 26                    | 7.0                 | 2.3                      |
+
+
+>*Inference time and cost were estimated on (1024, 1024) images using a NVIDIA A100 40GB card with an estimated rent cost of 1.2$/hour*
+
+## Conclusion
