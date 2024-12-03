@@ -11,9 +11,9 @@ In this context we will review here how current available solutions address chal
 
 ## Benchmark dataset
 
-![Benchmark sample](/images/benchmark_sample.png)
-> 👀 Please check [all the benchmark samples](/images/benchmark_full.png)
+![Benchmark sample](/images/benchmark_grid.png)
 
+> 👀 Prompts are available with the samples in the following [figure](/images/benchmark_full.png)
 
 Our benchmark dataset consists of ten carefully designed samples (image, mask, prompts), selected to evaluate the performance of different solutions across a range of quality and reliability criteria. These include:
 - **Realism**, how natural and lifelike the inpainted regions appear.
@@ -21,9 +21,19 @@ Our benchmark dataset consists of ten carefully designed samples (image, mask, p
 - **Unmask image preservation**, ensuring the unedited parts of the image remain unaffected.
 - **Consistency** with unmasked areas, icluding alignment in lighting, reflections, shadows, style, perspective, and textures.
 
+
 ## Techniques
 
+Traditional methods pioneered the concept of inpainting, really took of with deep learning. It enabled to fill large regions with complex structures, maintaining global semantic consistency and this in an automated fashion with great generalization capabilities.
 
+Among the deep learning methods, all the state of the art approaches belongs to the latent diffusion models family. They are the only one supporting text guidance, arbitrary masks and mega-pixel resolution.
 
+TODO
 
-### Results
+Model
+- publication date
+- author
+- architecture
+-
+
+## Results
