@@ -1,13 +1,12 @@
 # Programmatic Usage of ComfyUI
 
-ComfyUI is a powerful tool for building and managing workflows in generative image tasks. Its intuitive user interface excels at creating, inspecting, and quickly prototyping workflows. However, when workflows are finalized and need to be used extensively—especially for batch processing or remote server operations a programmatic approach becomes more efficient.
+ComfyUI is a powerful tool for building and managing workflows in generative image tasks. Its intuitive user interface is super useful to create, inspect, test or quickly prototype workflows. However, when workflows are finalized and need to be used extensively a programmatic approach becomes more efficient as it enables automation.
 
-To simplify and streamline these operations, we have built a Python module that wraps the ComfyUI API and provides a convenient [CLI](comfy2py.py) tool.
+To simplify and streamline these operations, we have built a Python module on top of the ComfyUI API providing a convenient [CLI](comfy2py.py).
 
 This tool simply require users to export workflows as JSON specifications (using API export functionality of the UI) to be submitted programmatically to ComfyUI server through the CLI. Additioanally those workflow specifications can be version-controlling to track changes.
 
 # Programmatic usage of ComfyUI
-
 
 ## Setup
 
@@ -41,7 +40,6 @@ You can install it with the following commands
 !pip install .
 ```
 
-
 ## Workflow execution
 
 A full demo example is given in [comfyui_execution.ipynb](../../../notebooks/comfyui_execution.ipynb)
@@ -53,7 +51,6 @@ Starts the ComfyUI server and opens a Cloudflared tunnel to enable UI access (th
 ```shell
 comfy2py start
 ```
-
 
 2. Run a workflow
 
