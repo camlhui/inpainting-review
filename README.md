@@ -16,11 +16,10 @@ In this context we will review here how current available solutions address chal
 > 👀 Prompts are available with the samples in the following [figure](/images/benchmark_full.png)
 
 Our benchmark dataset consists of ten carefully designed samples (image, mask, prompts), selected to evaluate the performance of different solutions across a range of quality and reliability criteria. These include:
-- **Realism**, how natural and lifelike the inpainted regions appear.
-- **Adaptability**, the ability to adhere to complex and diverse instructions
-- **Unmask image preservation**, ensuring the unedited parts of the image remain unaffected.
-- **Consistency** with unmasked areas, icluding alignment in lighting, reflections, shadows, style, perspective, and textures.
-
+- Realism, how natural and lifelike does the inpainted region appear?
+- Adaptability, does the inpainting align with the provided prompts or instructions?
+- Unmask image preservation, Are the unmasked parts of the image left intact?
+- Consistency, is the inpainted region consistent with the unmasked area in terms of lighting (shadows, brightness), reflections, style, perspective, textures, structure?
 
 ## Techniques
 
@@ -33,12 +32,12 @@ All the models reviewed here belong to the family of latent diffusion models and
 | `FLUX.1-Fill-dev-nf4`                 | Nov 24, 2024   | Rectified flow transformer                           | 12B   | 1408 x 1408          | Quantized version of `FLUX.1-Fill-dev`.                                                                                                                                           |
 | `FLUX.1-Fill-dev`                     | Nov 21, 2024   | Rectified flow transformer                           | 12B   | 1408 x 1408            | Trained using guidance distillation (possibly from `FLUX.1-Fill-pro`?); requires ~50 denoising steps                                                  |
 | `FLUX.1-dev-Controlnet-Inpainting-Beta` | Oct 8, 2024    | Rectified flow transformer                         | 12B   | 1408 x 1408           | Fine-tuned for inpainting using a ControlNet approach, providing the mask and the encoded masked image as conditioning signals; requires ~28 denoising steps                               |
-| `FLUX.1-dev-Controlnet-Inpainting-Beta-Turbo` | Oct 8, 2024 | Latent diffusion model (Flux.1-dev), Rectified flow transformer              | 12B   | 1408 x 1408       | Distilled version of `FLUX.1-dev-Controlnet-Inpainting-Beta` using a LoRA model; optimized for 8 denoising steps process.                                                                            |
-| `SDXL-1-0-inpainting`               | Sep 7, 2024    | U-Net based diffusion process                                     | 6.6B  | 1024x1024      | Two-stage latent diffusion process; inputs extended with 5 additional channels for mask and encoded masked image; fine-tuned on inpainting samples           |
+| `FLUX.1-dev-Controlnet-Inpainting-Beta-Turbo` | Oct 8, 2024 | Rectified flow transformer              | 12B   | 1408 x 1408       | Distilled version of `FLUX.1-dev-Controlnet-Inpainting-Beta` using a LoRA model; optimized for 8 denoising steps process.                                                                            |
+| `SDXL-1-0-inpainting`               | Sep 7, 2024    | U-Net                                | 6.6B  | 1024x1024      | Two-stage latent diffusion process; inputs extended with 5 additional channels for mask and encoded masked image; fine-tuned on inpainting samples           |
 | `SD3-Controlnet-Inpainting`           | Jun 12, 2024   | Multimodal Diffusion Transformer                                            | 2B    | 1024x1024      | Fine-tuned ControlNet inpainting model based on SD3-medium.                                                                                                                     |
-| `kandinsky-2-2-decoder-inpaint`       | Jul 6, 2023    | U-Net based diffusion process      | 2.2B  | 1024x1024      | Combines a transformer-based image prior model, a U-Net diffusion model, and a decoder; optimized for inpainting tasks.                                                        |
-| `SD-2-inpainting`                     | Nov 23, 2022   | U-Net based diffusion process                                        | 865M  | 512x512        | Adaptation of SD2 base model with 5 additional input channels for mask and encoded masked image; finetuned for inpainting tasks.                                                 |
-| `DALL-E-2`                            | Apr 13, 2022   | U-Net based diffusion process (GLIDE)      | 6B    | 1024x1024      | Uses two upsampling models for enhanced resolution.                                                                         |
+| `kandinsky-2-2-decoder-inpaint`       | Jul 6, 2023    | U-Net    | 2.2B  | 1024x1024      | Combines a transformer-based image prior model, a U-Net diffusion model, and a decoder; optimized for inpainting tasks.                                                        |
+| `SD-2-inpainting`                     | Nov 23, 2022   | U-Net                                    | 865M  | 512x512        | Adaptation of SD2 base model with 5 additional input channels for mask and encoded masked image; finetuned for inpainting tasks.                                                 |
+| `DALL-E-2`                            | Apr 13, 2022   | U-Net (GLIDE)      | 6B    | 1024x1024      | Uses two upsampling models for enhanced resolution.                                                                         |
 
 
 >📌 MidJourney isn't part of this benchmark as it isn't available under API
@@ -46,11 +45,7 @@ All the models reviewed here belong to the family of latent diffusion models and
 
 ## Model evaluation
 
-We evaluate model predictions based on the following criteria:
-- Realism, how natural and lifelike does the inpainted region appear?
-- Adaptability, does the inpainting align with the provided prompts or instructions?
-- Unmask image preservation, Are the unmasked parts of the image left intact?
-- Consistency, is the inpainted region consistent with the unmasked area in terms of lighting (shadows, brightness), reflections, style, perspective, textures, structure?
+In addition to our benchmark quality and reliability criteria we will also look at:
 - Reproducibility, are the outputs stable in quality and alignment across the trials?
 - Performance and costs, how long does it take to generate results, what are the GPU requirements?
 
