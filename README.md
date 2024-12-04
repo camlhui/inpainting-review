@@ -31,14 +31,14 @@ All the models reviewed here belong to the family of latent diffusion models and
 | Model                               | Release Date   | Architecture                                                                 | Size  | Max Resolution | Key Characteristics                                                                                                                                                              |
 |-------------------------------------|----------------|------------------------------------------------------------------------------|-------|----------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `FLUX.1-Fill-dev-nf4`                 | Nov 24, 2024   | Rectified flow transformer                           | 12B   | 1408 x 1408          | Quantized version of `FLUX.1-Fill-dev`.                                                                                                                                           |
-| `FLUX.1-Fill-dev`                     | Nov 21, 2024   | Rectified flow transformer                           | 12B   | 1408 x 1408            | Trained using guidance distillation (from `FLUX.1-Fill-pro`?), requires ~50 denoising steps                                                  |
-| `FLUX.1-dev-Controlnet-Inpainting-Beta` | Oct 8, 2024    | Rectified flow transformer                         | 12B   | 1408 x 1408           | Finetuned for inpainting using a ControlNet approach providing the mask and the encoded masked image as conditioning signals, requires ~28 denoising steps                               |
-| `FLUX.1-dev-Controlnet-Inpainting-Beta-Turbo` | Oct 8, 2024 | Latent diffusion model (Flux.1-dev), Rectified flow transformer              | 12B   | 1408 x 1408       | Distilled version of `FLUX.1-dev-Controlnet-Inpainting-Beta` using a LoRA model, optimized for 8 denoising steps process.                                                                            |
-| `SDXL-1-0-inpainting`               | Sep 7, 2024    | U-Net based diffusion process                                     | 6.6B  | 1024x1024      | Two-stage latent diffusion process, inputs are extended with 4 additional channels for mask and encoded masked image, finetuned on inpainting samples           |
-| `SD3-Controlnet-Inpainting`           | Jun 12, 2024   | Multimodal Diffusion Transformer                                            | 2B    | 1024x1024      | Finetuned ControlNet inpainting model based on SD3-medium.                                                                                                                     |
+| `FLUX.1-Fill-dev`                     | Nov 21, 2024   | Rectified flow transformer                           | 12B   | 1408 x 1408            | Trained using guidance distillation (possibly from `FLUX.1-Fill-pro`?); requires ~50 denoising steps                                                  |
+| `FLUX.1-dev-Controlnet-Inpainting-Beta` | Oct 8, 2024    | Rectified flow transformer                         | 12B   | 1408 x 1408           | Fine-tuned for inpainting using a ControlNet approach, providing the mask and the encoded masked image as conditioning signals; requires ~28 denoising steps                               |
+| `FLUX.1-dev-Controlnet-Inpainting-Beta-Turbo` | Oct 8, 2024 | Latent diffusion model (Flux.1-dev), Rectified flow transformer              | 12B   | 1408 x 1408       | Distilled version of `FLUX.1-dev-Controlnet-Inpainting-Beta` using a LoRA model; optimized for 8 denoising steps process.                                                                            |
+| `SDXL-1-0-inpainting`               | Sep 7, 2024    | U-Net based diffusion process                                     | 6.6B  | 1024x1024      | Two-stage latent diffusion process; inputs extended with 5 additional channels for mask and encoded masked image; fine-tuned on inpainting samples           |
+| `SD3-Controlnet-Inpainting`           | Jun 12, 2024   | Multimodal Diffusion Transformer                                            | 2B    | 1024x1024      | Fine-tuned ControlNet inpainting model based on SD3-medium.                                                                                                                     |
 | `kandinsky-2-2-decoder-inpaint`       | Jul 6, 2023    | U-Net based diffusion process      | 2.2B  | 1024x1024      | Combines a transformer-based image prior model, a U-Net diffusion model, and a decoder; optimized for inpainting tasks.                                                        |
-| `SD-2-inpainting`                     | Nov 23, 2022   | U-Net based diffusion process                                        | 865M  | 512x512        | Adaptation of SD2 base model with additional input channels for mask and encoded masked image, finetuned for inpainting tasks.                                                 |
-| `DALL-E-2`                            | Apr 13, 2022   | U-Net based diffusion process (Glide)      | 6B    | 1024x1024      | Uses two upsampling models for enhanced resolution.                                                                         |
+| `SD-2-inpainting`                     | Nov 23, 2022   | U-Net based diffusion process                                        | 865M  | 512x512        | Adaptation of SD2 base model with 5 additional input channels for mask and encoded masked image; finetuned for inpainting tasks.                                                 |
+| `DALL-E-2`                            | Apr 13, 2022   | U-Net based diffusion process (GLIDE)      | 6B    | 1024x1024      | Uses two upsampling models for enhanced resolution.                                                                         |
 
 
 >📌 MidJourney isn't part of this benchmark as it isn't available under API
@@ -72,16 +72,39 @@ We evaluate model predictions based on the following criteria:
 
 >*Inference time and cost were estimated on (1024, 1024) images using a NVIDIA A100 40GB card with an estimated rent cost of 1.2$/hour*
 
+Notes:
+- `Flux.1-Fill-dev` and `FLUX.1-Fill-dev-nf4` deliver similar results, effectively addressing instruction-following challenges (e.g., object and layout specificity) and consistency issues (e.g., lighting, reflections). However, they exhibit limitations when instructions become overly complex or involve superpositions with objects that need to be preserved.
+- `FLUX.1-dev-Controlnet-Inpainting-Beta` and its Turbo version (LoRA) provide partially satisfactory results for some samples but fail completely on others. Notably, the Turbo (LoRA) version seem to maintain performance similar to the base ControlNet version.
+- Stable Diffusion Models perform poorly across the benchmark:
+   - `SD3-Controlnet-Inpainting` alters the entire images without clear explanations.
+   - The `SDXL-1.0-inpainting-0.1` frequently modifies unmasked areas, struggles to follow most instructions, and generates objects that lack realism.
+   - The `SD-2-inpainting` fails to inpaint most images.
+- `DALL-E 2` successfully inpaints 7 out of 10 cases, but the generated objects are not very realistic and fail to align with the prompt details.
+- `kandinsky-2-2-decoder-inpaint` alters all images by adding parts of the required objects, but these are often poorly positioned and have dimensions that do not align with the context of the scene.
+
+
 ## Conclusion
 
+The samples used in this benchmark were intentionally designed to be complex, aiming to evaluate how well models handle the challenges posed by real-world furniture accessorizing scenarios.
 
-### Further improvements
+This evaluation demonstrates that Flux.1-Fill-dev offers significantly more advanced inpainting capabilities than previous approaches. However, these enhancements come with the trade-off of increased inference times and higher compute requirements. Fortunately, techniques such as LoRA fine-tuning and quantization present promising solutions to reduce these barriers, making the model more accessible for a wider range of applications.
 
-- A ControlNet approach could enable strong user guidance to add complex objects (position, shape, orientation, etc.). This might enable improvements similar to structured generation where LLM generation is forced to match specific rules instead of invited through prompting.
-Another conditioning channel complementary to the semantic (prompt)
+### Potential further improvements
 
+Image editing through inpainting is a unique generative use case where user control look more critical than in other generative tasks. This is because users might have specific and strong expectations about the outcome. A few targeted enhancements could significantly improve the user experience, particularly in furniture accessorizing scenarios.
 
-- Image embeddings to make accessorizing:
-   - more straightforward, avoiding img -> text -> img
-   - more aligned with user intents
-   -
+#### Image guidance
+
+Relying solely on textual prompts to guide model behavior can be cumbersome, especially when users already have a clear visual representation of their desired results. Converting this representation into a well-crafted prompt can be painful and imprecise. Also text prompts are limited to 77 tokens which limits the amount of details that can be given to the model.
+
+Since these models rely on CLIP embeddings, we could offer an example image alternative by utilizing a CLIP image encoder and the `prompt_embeds` arguments in diffusion pipelines. Actually we could even offer each alternative or the two combined.
+
+This method might simplify the specification of complex visual objects and increase the techonology accessibility to non expert users.
+
+#### Spatial conditioning
+
+The ControlNet models reviewed here appear to have partially utilized the potential benefits of the ControlNet framework. While they leverage Zero-Initialized Layers for fine-tuning efficiency and mask-based spatial guidance to propagate signals without altering the base text-to-image network, more can be done.
+
+For complex inpainting tasks, enhanced spatial control could provide users with additional flexibility and precision. This could involve integrating edge maps or sketches to allow users to provide structure guidance or this could involve depth maps to ensure realistic object relative placement.
+
+Overall the user would get direct control over the generation process regarding spatial parameters (position, shape, orientation, etc.). This could bring efficiency and reliability enhancements similar to what structured generation offers in LLM-based applications.
