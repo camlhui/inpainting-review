@@ -4,7 +4,7 @@ ComfyUI is a powerful tool for building and managing workflows in generative ima
 
 To simplify and streamline these operations, we have built a Python module on top of the ComfyUI API providing a convenient [CLI](comfy2py.py).
 
-This tool simply require users to export workflows as JSON specifications (using API export functionality of the UI) to be submitted programmatically to ComfyUI server through the CLI. Additioanally those workflow specifications can be version-controlling to track changes.
+This tool simply require users to export workflows as JSON specifications (using API export functionality of the UI) to be submitted programmatically to ComfyUI server through the CLI. Additioanally those workflow specifications can be version-controlled to track changes.
 
 # Programmatic usage of ComfyUI
 
@@ -42,9 +42,9 @@ You can install it with the following commands
 
 ## Workflow execution
 
-A full demo example is given in [comfyui_execution.ipynb](../../../notebooks/comfyui_execution.ipynb)
+>A full demo example is given in [comfyui_execution.ipynb](../../../notebooks/comfyui_execution.ipynb)
 
-1. Start the ComfyUI Server
+### 1. Start the ComfyUI Server
 
 Starts the ComfyUI server and opens a Cloudflared tunnel to enable UI access (the URL gets printed when available).
 
@@ -52,7 +52,7 @@ Starts the ComfyUI server and opens a Cloudflared tunnel to enable UI access (th
 comfy2py start
 ```
 
-2. Run a workflow
+### 2. Run a workflow
 
 Submits a workflow and track its execution. This command is synchronous.
 
@@ -72,13 +72,15 @@ Options:
 - `--steps` (default: 50): Number of denoising steps for the workflow.
 - `--timeout` (default: 1800): Maximum time (in seconds) to wait for the workflow to complete.
 
-3. Flush GPU memory (optional)
+### 3. Flush GPU memory (optional)
+
+Unload models and free memory.
 
 ```bash
 comfy2py flush
 ```
 
-4. Stop the server
+### 4. Stop the server
 
 ```bash
 comfy2py stop
