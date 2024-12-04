@@ -87,24 +87,24 @@ Notes:
 
 The samples used in this benchmark were intentionally designed to be complex, aiming to evaluate how well models handle the challenges posed by real-world furniture accessorizing scenarios.
 
-This evaluation demonstrates that Flux.1-Fill-dev offers significantly more advanced inpainting capabilities than previous approaches. However, these enhancements come with the trade-off of increased inference times and higher compute requirements. Fortunately, techniques such as LoRA fine-tuning and quantization present promising solutions to reduce these barriers, making the model more accessible for a wider range of applications.
+This evaluation demonstrates that `Flux.1-Fill-dev` offers significantly more advanced inpainting capabilities than previous approaches. However, these enhancements come with increased inference times and higher compute requirements. Fortunately, techniques such as LoRA fine-tuning and quantization present promising solutions to reduce usage barriers.
 
 ### Potential further improvements
 
-Image editing through inpainting is a unique generative use case where user control look more critical than in other generative tasks. This is because users might have specific and strong expectations about the outcome. A few targeted enhancements could significantly improve the user experience, particularly in furniture accessorizing scenarios.
+Image editing through inpainting is a generative use case where user control look more critical than in other generative tasks. This is because users might be looking for automated generation while having specific and strong expectations about the outcome. A few targeted enhancements could significantly improve the user experience, particularly in furniture accessorizing scenarios.
 
 #### Image guidance
 
-Relying solely on textual prompts to guide model behavior can be cumbersome, especially when users already have a clear visual representation of their desired results. Converting this representation into a well-crafted prompt can be painful and imprecise. Also text prompts are limited to 77 tokens which limits the amount of details that can be given to the model.
+Relying solely on textual prompts to guide model behavior can be cumbersome, especially when users have a clear visual representation of the object to inpaint. Describing this object into a well-crafted prompt can be painful and imprecise. Also text prompts are limited to 77 tokens which limits the amount of details that can be given to the model.
 
-Since these models rely on CLIP embeddings, we could offer an example image alternative by utilizing a CLIP image encoder and the `prompt_embeds` arguments in diffusion pipelines. Actually we could even offer each alternative or the two combined.
+Since these models rely on CLIP embeddings, we could offer an example image alternative by utilizing a CLIP image encoder and the `prompt_embeds` arguments in diffusion pipelines. We could actually even offer each alternative or the two combined (aggregating the two embeddings together).
 
-This method might simplify the specification of complex visual objects and increase the techonology accessibility to non expert users.
+This method might simplify the specification of complex visual objects and increase the techonology accessibility to users with little prompting expertise.
 
 #### Spatial conditioning
 
-The ControlNet models reviewed here appear to have partially utilized the potential benefits of the ControlNet framework. While they leverage Zero-Initialized Layers for fine-tuning efficiency and mask-based spatial guidance to propagate signals without altering the base text-to-image network, more can be done.
+The ControlNet models reviewed here appear to have partially utilized the potential benefits of the ControlNet framework. While they leverage Zero-Initialized Layers for fine-tuning efficiency and spatial guidance to propagate mask signals without altering the base text-to-image network, more can be done.
 
-For complex inpainting tasks, enhanced spatial control could provide users with additional flexibility and precision. This could involve integrating edge maps or sketches to allow users to provide structure guidance or this could involve depth maps to ensure realistic object relative placement.
+For complex inpainting tasks, users could benefit from the possibility to get direct control over the generation process regarding spatial parameters (object position, shape, orientation, etc.). This could be done by integrating edge maps or sketches to allow users to provide structure guidance or this could involve depth maps to ensure realistic relative object placement.
 
-Overall the user would get direct control over the generation process regarding spatial parameters (position, shape, orientation, etc.). This could bring efficiency and reliability enhancements similar to what structured generation offers in LLM-based applications.
+Such control over the generative process would remind structured generation for LLM-based applications and should come with similar efficiency and reliability enhancements.
